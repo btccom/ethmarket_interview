@@ -59,6 +59,7 @@ func listOrders(ctx *web.Context, pump *orders.OrderPump) {
 	orders := pump.List(start, size)
 
 	ctx.ContentType("json")
+	ctx.SetHeader("Access-Control-Allow-Origin", "*", true)
 	err = json.NewEncoder(ctx).Encode(orders)
 	if err != nil {
 		panic(err)
@@ -71,6 +72,7 @@ func main() {
 	go generateOrders(pump)
 
 	web.Get("/reset", func(ctx *web.Context) {
+		ctx.SetHeader("Access-Control-Allow-Origin", "*", true)
 		logger.Debug("Handling Get /reset")
 		pump.Clear()
 	})
